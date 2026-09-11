@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary: #7A1B2E;
+    --color-primary-hover: #631424;
+    --color-primary-light: #96283F;
+    --color-blush: #F1A7C1;
+    --color-blush-soft: #FDE8EF;
+    --color-blush-dark: #C96685;
+    --color-bg: #F5EFE6;
+    --color-surface: #FFFFFF;
+    --color-surface-soft: #FAF4EC;
+    --color-surface-subtle: #F0E6D8;
+    --color-text-main: #1F191B;
+    --color-text-muted: #5C5055;
+    --color-border: #E5DACF;
+    --color-border-subtle: #EDE3D7;
+  }
+
+  .dark {
+    --color-primary: #F1A7C1;
+    --color-primary-hover: #F8BFD3;
+    --color-primary-light: #FFD4E2;
+    --color-blush: #7A1B2E;
+    --color-blush-soft: #2E121B;
+    --color-blush-dark: #A52943;
+    --color-bg: #120E10;
+    --color-surface: #1A1417;
+    --color-surface-soft: #231B1F;
+    --color-surface-subtle: #2D2228;
+    --color-text-main: #F5EFE6;
+    --color-text-muted: #BDB0B6;
+    --color-border: #33232A;
+    --color-border-subtle: #261A1F;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-x: hidden;
+  }
+}
+
+.font-display {
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-serif-accent {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #7A1B2E55;
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #F1A7C144;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7A1B2E99;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #F1A7C188;
+}
+
+/* Glass & Card effects */
+.glass-nav {
+  background: rgba(245, 239, 230, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.dark .glass-nav {
+  background: rgba(18, 14, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Print styles for CV */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  nav, footer, .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}

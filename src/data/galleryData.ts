@@ -1,0 +1,92 @@
+import { GalleryCategoryEntry } from '../types';
+
+export const INITIAL_GALLERY_ENTRIES: GalleryCategoryEntry[] = [
+  {
+    id: 'entry-grad-2025',
+    category: 'Academic Distinction',
+    title: 'IIE Rosebank College Graduation & Golden Key Induction',
+    subtitle: 'Bachelor of IT in Business Systems (NQF Level 7, Graduated with Distinction)',
+    description: 'Academic portraiture and graduation milestones celebrating the conferral of the BIT Business Systems degree with Distinction and membership in the Golden Key International Honour Society.',
+    date: '2025',
+    location: 'Cape Town, South Africa',
+    badge: 'Graduated with Distinction',
+    images: [
+      {
+        id: 'img-grad-portrait',
+        url: '',
+        caption: 'Official Academic Graduation Portrait with Golden Key Honour Stoles & Distinction Sash',
+        date: '2025',
+        aspectRatio: '1:1',
+        featured: true,
+      },
+      {
+        id: 'img-grad-diploma',
+        url: '',
+        caption: 'Conferral of Degree Diploma in Business Systems (IIE Rosebank College)',
+        date: '2025',
+        aspectRatio: '4:3',
+      },
+      {
+        id: 'img-grad-celebration',
+        url: '',
+        caption: 'Celebratory moment with academic peers and university faculty',
+        date: '2025',
+        aspectRatio: '4:3',
+      },
+    ],
+  },
+  {
+    id: 'entry-campus-tutoring',
+    category: 'Campus & Leadership',
+    title: 'Student Leadership, IT Tutoring & Brand Ambassadorship',
+    subtitle: 'IIE Rosebank College Campus Operations & Peer Mentorship',
+    description: 'Guiding IT undergraduates through SQL, system analysis, and programming fundamentals while serving as Student Brand Ambassador and Team Leader overseeing student onboarding.',
+    date: '2023 – 2024',
+    location: 'Rosebank College, Cape Town',
+    badge: 'Student Leadership',
+    images: [
+      {
+        id: 'img-campus-tutoring-1',
+        url: '',
+        caption: 'Facilitating an interactive IT peer tutoring and database lab session',
+        date: '2024',
+        aspectRatio: '4:3',
+        featured: true,
+      },
+      {
+        id: 'img-campus-awards-2',
+        url: '',
+        caption: 'Campus Team Leader & Student Ambassador Recognition Ceremony',
+        date: '2024',
+        aspectRatio: '4:3',
+      },
+    ],
+  },
+  {
+    id: 'entry-capaciti-tech',
+    category: 'Tech & Innovation',
+    title: 'CAPACITI Demand Academy Software Development Lab',
+    subtitle: 'Digital Associate Trainee — Applied Engineering & AI',
+    description: 'Hands-on full-stack development, modern web architecture sprints, database modeling, and collaborative agile engineering at the CAPACITI tech accelerator in Cape Town.',
+    date: '2025 – Present',
+    location: 'Cape Town Tech Hub',
+    badge: 'Active Programme',
+    images: [
+      {
+        id: 'img-tech-lab-1',
+        url: '',
+        caption: 'Collaborative code review and agile sprint planning at CAPACITI',
+        date: '2025',
+        aspectRatio: '4:3',
+        featured: true,
+      },
+      {
+        id: 'img-tech-lab-2',
+        url: '',
+        caption: 'Architecture workshop on relational database modeling and applied AI workflows',
+        date: '2025',
+        aspectRatio: '4:3',
+      },
+    ],
+  },
+];
