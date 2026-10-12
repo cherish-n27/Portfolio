@@ -1,22 +1,13 @@
 import { X, ExternalLink, Github, CheckCircle, Cpu, Layers, Sparkles } from 'lucide-react';
 import { Project } from '../types';
-import UploadSlot from './UploadSlot';
 
 interface ProjectModalProps {
   project: Project | null;
+  imageSrc?: string;
   onClose: () => void;
-  screenshot?: string;
-  onScreenshotUpload?: (dataUrl: string) => void;
-  onScreenshotRemove?: () => void;
 }
 
-export default function ProjectModal({
-  project,
-  onClose,
-  screenshot,
-  onScreenshotUpload,
-  onScreenshotRemove,
-}: ProjectModalProps) {
+export default function ProjectModal({ project, imageSrc, onClose }: ProjectModalProps) {
   if (!project) return null;
 
   return (
@@ -29,14 +20,32 @@ export default function ProjectModal({
         <button
           onClick={onClose}
           aria-label="Close project modal"
-          className="absolute top-5 right-5 w-9 h-9 rounded-full bg-[#E5DACF]/60 dark:bg-[#33232A] flex items-center justify-center text-[#1F191B] dark:text-[#F5EFE6] hover:bg-[#7A1B2E] hover:text-white dark:hover:bg-[#F1A7C1] dark:hover:text-[#1F191B] transition-colors cursor-pointer"
+          className="absolute top-5 right-5 z-20 w-9 h-9 rounded-full bg-[#E5DACF]/80 dark:bg-[#33232A] flex items-center justify-center text-[#1F191B] dark:text-[#F5EFE6] hover:bg-[#7A1B2E] hover:text-white dark:hover:bg-[#F1A7C1] dark:hover:text-[#1F191B] transition-colors cursor-pointer shadow-sm"
         >
           <X className="w-4 h-4" />
         </button>
 
-        {/* Header Tags & Badge */}
+        {/* Embedded Project Image */}
+        {imageSrc && (
+          <div className="relative h-48 sm:h-56 -mx-6 -mt-6 sm:-mx-8 sm:-mt-8 mb-6 overflow-hidden rounded-t-3xl bg-zinc-900 border-b border-[#E5DACF] dark:border-[#382229]">
+            <img
+              src={imageSrc}
+              alt={project.title}
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
+            {project.badge && (
+              <span className="absolute bottom-4 left-6 sm:left-8 px-3 py-1 rounded-full text-xs font-bold bg-[#7A1B2E] text-white shadow-md">
+                {project.badge}
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Header Tags */}
         <div className="flex flex-wrap items-center gap-2 mb-3 pr-10">
-          {project.badge && (
+          {!imageSrc && project.badge && (
             <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#7A1B2E] text-white">
               {project.badge}
             </span>
@@ -58,20 +67,6 @@ export default function ProjectModal({
         <p className="text-sm font-medium text-[#7A1B2E] dark:text-[#F1A7C1]/80 mb-4">
           {project.subtitle}
         </p>
-
-        {/* Project Screenshot Slot (16:9) */}
-        <div className="mb-6">
-          <UploadSlot
-            id={`modal-screen-${project.id}`}
-            label="Upload: Project Screenshot"
-            sublabel={`${project.title} (16:9 full preview)`}
-            aspectRatio="16:9"
-            shape="rounded"
-            currentImage={screenshot}
-            onImageUpload={onScreenshotUpload}
-            onImageRemove={onScreenshotRemove}
-          />
-        </div>
 
         {/* Detailed Description */}
         <div className="text-sm sm:text-base text-[#5C5055] dark:text-[#E2D8DE] leading-relaxed mb-6 space-y-3">
@@ -122,16 +117,16 @@ export default function ProjectModal({
           </div>
         )}
 
-        {/* Tech Stack Pills */}
-        <div className="mb-6">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-[#5C5055] dark:text-[#BDB0B6] mb-2">
+        {/* Tech Stack */}
+        <div className="mb-8">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[#7A1B2E] dark:text-[#F1A7C1] mb-2.5">
             Technologies & Tools
           </h4>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {project.techStack.map((tech, idx) => (
               <span
                 key={idx}
-                className="px-3 py-1 rounded-full text-xs font-medium bg-[#FAF5EE] dark:bg-[#231B1F] text-[#1F191B] dark:text-[#F5EFE6] border border-[#E5DACF] dark:border-[#382229]"
+                className="px-3 py-1 rounded-full text-xs font-mono bg-[#FAF5EE] dark:bg-[#231B1F] text-[#1F191B] dark:text-[#F5EFE6] border border-[#E5DACF] dark:border-[#382229]"
               >
                 {tech}
               </span>
@@ -139,35 +134,37 @@ export default function ProjectModal({
           </div>
         </div>
 
-        {/* Action Links */}
-        <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-[#E5DACF] dark:border-[#382229]">
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-bold bg-[#7A1B2E] hover:bg-[#631424] text-white transition-colors"
-            >
-              <span>Live Demonstration</span>
-              <ExternalLink className="w-3.5 h-3.5 text-[#F1A7C1]" />
-            </a>
-          )}
+        {/* Footer Actions */}
+        <div className="pt-4 border-t border-[#E5DACF] dark:border-[#33232A] flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-[#FAF5EE] dark:bg-[#231B1F] border border-[#E5DACF] dark:border-[#382229] text-[#1F191B] dark:text-[#F5EFE6] hover:text-[#7A1B2E] dark:hover:text-[#F1A7C1] transition-colors"
+              >
+                <Github className="w-4 h-4" />
+                <span>Source Code</span>
+              </a>
+            )}
 
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-bold bg-[#FAF5EE] dark:bg-[#231B1F] text-[#1F191B] dark:text-[#F5EFE6] border border-[#E5DACF] dark:border-[#382229] hover:border-[#7A1B2E] dark:hover:border-[#F1A7C1] transition-colors"
-            >
-              <Github className="w-4 h-4" />
-              <span>GitHub Repository</span>
-            </a>
-          )}
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-[#7A1B2E] text-white hover:bg-[#631424] transition-colors"
+              >
+                <ExternalLink className="w-4 h-4 text-[#F1A7C1]" />
+                <span>Launch Project</span>
+              </a>
+            )}
+          </div>
 
           <button
             onClick={onClose}
-            className="ml-auto px-5 py-2.5 rounded-full text-xs font-medium text-[#5C5055] dark:text-[#BDB0B6] hover:text-[#1F191B] dark:hover:text-white"
+            className="px-4 py-2 rounded-full text-xs font-semibold text-[#5C5055] dark:text-[#BDB0B6] hover:text-[#1F191B] dark:hover:text-white"
           >
             Close
           </button>

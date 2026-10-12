@@ -1,7 +1,8 @@
-import { GraduationCap, Award, Briefcase, BookOpen, Users, Code, ArrowRight } from 'lucide-react';
+import { GraduationCap, Briefcase, BookOpen, Users, Code, ArrowRight } from 'lucide-react';
 import FlowerMotif from './FlowerMotif';
 import ProfileAvatar from './ProfileAvatar';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { profilePhoto, work1, leadership1 } from '../assets';
 
 interface AboutProps {
   onOpenCvModal: () => void;
@@ -9,7 +10,7 @@ interface AboutProps {
   profileImage?: string;
 }
 
-export default function About({ onOpenCvModal, onOpenPhotoModal, profileImage }: AboutProps) {
+export default function About({ onOpenCvModal, onOpenPhotoModal, profileImage = "profile-photo.jpeg" }: AboutProps) {
   const pillars = [
     {
       icon: Code,
@@ -56,7 +57,7 @@ export default function About({ onOpenCvModal, onOpenPhotoModal, profileImage }:
                 size="md"
                 showStatusDot={true}
                 interactive={true}
-                imageSrc={profileImage}
+                imageSrc={"profile-photo.jpeg"}
                 onClick={onOpenPhotoModal}
                 className="shrink-0 cursor-pointer"
               />
@@ -126,31 +127,36 @@ export default function About({ onOpenCvModal, onOpenPhotoModal, profileImage }:
               ))}
             </div>
 
-            {/* Trainee Spotlight Card */}
-            <div className="bg-[#7A1B2E] text-white p-6 rounded-2xl shadow-sm relative overflow-hidden">
-              <div className="absolute -right-6 -bottom-6 opacity-20 pointer-events-none">
-                <FlowerMotif size={160} petalColor="#F1A7C1" centerColor="#ffffff" />
+            {/* Trainee Spotlight Card with Statically Imported Real Badge Image */}
+            <div className="bg-[#7A1B2E] text-white p-6 rounded-2xl shadow-sm relative overflow-hidden flex flex-col sm:flex-row gap-5 items-center">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shrink-0 border-2 border-[#F1A7C1] shadow-md">
+                <img
+                  src={work1}
+                  alt="Cherish Nwachukwu at CAPACITI Demand Academy"
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div className="relative z-10">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/15 text-[#F1A7C1] mb-3">
+              <div className="relative z-10 flex-1">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/15 text-[#F1A7C1] mb-2">
                   <Briefcase className="w-3.5 h-3.5" />
                   <span>Current Training Stream</span>
                 </div>
-                <h4 className="text-lg font-bold text-white mb-1.5">
+                <h4 className="text-lg font-bold text-white mb-1">
                   CAPACITI Demand Academy
                 </h4>
-                <p className="text-xs sm:text-sm text-white/85 leading-relaxed mb-4">
-                  Focused on software development fundamentals, AI & prompt engineering, industry-standard Scrum practices, and collaborative team delivery for tech sector readiness.
+                <p className="text-xs text-white/90 leading-relaxed mb-3">
+                  Software development associate stream: responsive interfaces, prompt pipelines, and Agile/Scrum engineering.
                 </p>
-                <div className="flex flex-wrap gap-2 text-[11px] font-mono">
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-[#F1A7C1]">
+                <div className="flex flex-wrap gap-1.5 text-[10px] font-mono">
+                  <span className="px-2 py-0.5 rounded-full bg-white/10 text-[#F1A7C1]">
                     Prompt Engineering
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-[#F1A7C1]">
-                    Full-Stack Trainee
+                  <span className="px-2 py-0.5 rounded-full bg-white/10 text-[#F1A7C1]">
+                    Full-Stack
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-[#F1A7C1]">
-                    Scrum / Agile
+                  <span className="px-2 py-0.5 rounded-full bg-white/10 text-[#F1A7C1]">
+                    Agile Delivery
                   </span>
                 </div>
               </div>

@@ -3,6 +3,7 @@ import { Download, Mail, ArrowDown, Github, Linkedin, Check, Copy, Sparkles, Map
 import FlowerMotif from './FlowerMotif';
 import ProfileAvatar from './ProfileAvatar';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { profilePhoto, gradPhoto } from '../assets';
 
 interface HeroProps {
   onOpenCvModal: () => void;
@@ -11,7 +12,7 @@ interface HeroProps {
   profileImage?: string;
 }
 
-export default function Hero({ onOpenCvModal, onOpenPhotoModal, onFilterByTag, profileImage }: HeroProps) {
+export default function Hero({ onOpenCvModal, onOpenPhotoModal, onFilterByTag, profileImage = profilePhoto }: HeroProps) {
   const [copied, setCopied] = useState(false);
 
   const copyEmail = () => {
@@ -99,21 +100,11 @@ export default function Hero({ onOpenCvModal, onOpenPhotoModal, onFilterByTag, p
             type="button"
             onClick={onOpenPhotoModal}
             className="mt-3.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#FAF4EC] dark:bg-[#1E171B] hover:bg-[#F1A7C1]/20 dark:hover:bg-[#3D222B] text-[#7A1B2E] dark:text-[#F1A7C1] border border-[#E5DACF] dark:border-[#382229] transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-xs"
-            title={profileImage ? "Click to view full graduation portrait" : "Click to upload profile picture"}
+            title="Click to view full graduation portrait"
           >
-            {profileImage ? (
-              <>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#7A1B2E] dark:bg-[#F1A7C1]"></span>
-                <span>IIE Rosebank Grad • Distinction</span>
-                <span className="text-[10px] uppercase font-bold opacity-75 ml-0.5 underline">View Photo</span>
-              </>
-            ) : (
-              <>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#7A1B2E] dark:bg-[#F1A7C1]"></span>
-                <span>Upload: Profile Picture</span>
-                <span className="text-[10px] uppercase font-bold opacity-75 ml-0.5 underline">Upload</span>
-              </>
-            )}
+            <span className="w-1.5 h-1.5 rounded-full bg-[#7A1B2E] dark:bg-[#F1A7C1]"></span>
+            <span>IIE Rosebank Grad • Distinction</span>
+            <span className="text-[10px] uppercase font-bold opacity-75 ml-0.5 underline">View Photo</span>
           </button>
         </div>
 

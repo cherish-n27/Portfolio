@@ -13,19 +13,14 @@ import CvModal from './components/CvModal';
 import PhotoLightboxModal from './components/PhotoLightboxModal';
 import CustomCursor from './components/CustomCursor';
 import { ProjectTag } from './types';
+import { profilePhoto } from './assets';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        const saved = localStorage.getItem('cherish_portfolio_theme');
-        if (saved) return saved === 'dark';
-        if (typeof window.matchMedia === 'function') {
-          return window.matchMedia('(prefers-color-scheme: dark)').matches;
-        }
-      }
-    } catch {
-      // fallback
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('cherish_portfolio_theme');
+      if (saved) return saved === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
     return false;
   });
@@ -34,50 +29,14 @@ export default function App() {
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState<boolean>(false);
   const [selectedTagFilter, setSelectedTagFilter] = useState<ProjectTag | 'All'>('All');
 
-  // Profile image with local storage persistence - strictly real user-uploaded files only
-  const [profileImage, setProfileImage] = useState<string>(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        return localStorage.getItem('cherish_user_profile_photo') || '';
-      }
-    } catch {
-      // fallback
-    }
-    return '';
-  });
-
-  const isCustomPhoto = Boolean(profileImage && profileImage.trim() !== '');
-
-  const handlePhotoUpdate = (newUrl: string) => {
-    setProfileImage(newUrl);
-    try {
-      localStorage.setItem('cherish_user_profile_photo', newUrl);
-    } catch {
-      // ignore
-    }
-  };
-
-  const handleResetPhoto = () => {
-    setProfileImage('');
-    try {
-      localStorage.removeItem('cherish_user_profile_photo');
-    } catch {
-      // ignore
-    }
-  };
-
   useEffect(() => {
-    try {
-      const root = document.documentElement;
-      if (darkMode) {
-        root.classList.add('dark');
-        localStorage.setItem('cherish_portfolio_theme', 'dark');
-      } else {
-        root.classList.remove('dark');
-        localStorage.setItem('cherish_portfolio_theme', 'light');
-      }
-    } catch {
-      // ignore
+    const root = document.documentElement;
+    if (darkMode) {
+      root.classList.add('dark');
+      localStorage.setItem('cherish_portfolio_theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('cherish_portfolio_theme', 'light');
     }
   }, [darkMode]);
 
@@ -100,7 +59,7 @@ export default function App() {
         onToggleDarkMode={toggleDarkMode}
         onOpenCvModal={() => setIsCvOpen(true)}
         onOpenPhotoModal={() => setIsPhotoModalOpen(true)}
-        profileImage={profileImage}
+        profileImage={profilePhoto}
       />
 
       {/* Main Content Sections */}
@@ -109,13 +68,13 @@ export default function App() {
           onOpenCvModal={() => setIsCvOpen(true)}
           onOpenPhotoModal={() => setIsPhotoModalOpen(true)}
           onFilterByTag={handleHeroTagClick}
-          profileImage={profileImage}
+          profileImage={profilePhoto}
         />
 
         <About
           onOpenCvModal={() => setIsCvOpen(true)}
           onOpenPhotoModal={() => setIsPhotoModalOpen(true)}
-          profileImage={profileImage}
+          profileImage={profilePhoto}
         />
 
         <Skills
@@ -145,17 +104,14 @@ export default function App() {
       <CvModal
         isOpen={isCvOpen}
         onClose={() => setIsCvOpen(false)}
-        profileImage={profileImage}
+        profileImage={profilePhoto}
       />
 
       {/* Interactive Profile Photo Lightbox Modal */}
       <PhotoLightboxModal
         isOpen={isPhotoModalOpen}
         onClose={() => setIsPhotoModalOpen(false)}
-        imageSrc={profileImage}
-        onPhotoUpdate={handlePhotoUpdate}
-        onResetPhoto={handleResetPhoto}
-        isCustomPhoto={isCustomPhoto}
+        imageSrc={profilePhoto}
       />
     </div>
   );

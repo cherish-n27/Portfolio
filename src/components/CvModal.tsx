@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { X, Printer, Download, Copy, Check, ExternalLink, MapPin, Mail, Phone, Globe, GraduationCap, Award, Briefcase, Upload } from 'lucide-react';
+import { X, Printer, Download, Copy, Check, ExternalLink, MapPin, Mail, Phone, Globe, GraduationCap, Award, Briefcase } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { profilePhoto } from '../assets';
 
 interface CvModalProps {
   isOpen: boolean;
@@ -8,7 +9,7 @@ interface CvModalProps {
   profileImage?: string;
 }
 
-export default function CvModal({ isOpen, onClose, profileImage }: CvModalProps) {
+export default function CvModal({ isOpen, onClose, profileImage = profilePhoto }: CvModalProps) {
   const [copied, setCopied] = useState(false);
 
   if (!isOpen) return null;
@@ -144,26 +145,14 @@ SQL, Python, HTML/CSS, JavaScript, Prompt Engineering, Applied AI, Quantitative 
             </div>
 
             <div className="shrink-0 self-start sm:self-center">
-              {profileImage && profileImage.trim() !== '' ? (
-                <div className="w-18 h-18 sm:w-22 sm:h-22 rounded-full overflow-hidden border-2 border-[#7A1B2E] shadow-sm">
-                  <img
-                    src={profileImage}
-                    alt="Cherish Nwachukwu"
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover object-center"
-                  />
-                </div>
-              ) : (
-                <div
-                  className="w-18 h-18 sm:w-22 sm:h-22 rounded-full flex flex-col items-center justify-center p-2 border-2 border-dashed border-[#7A1B2E]/50 bg-[#FAF4EC] text-center"
-                  title="Upload: Profile Picture"
-                >
-                  <Upload className="w-4 h-4 text-[#7A1B2E] mb-0.5" />
-                  <span className="text-[9px] font-bold text-[#7A1B2E] leading-tight">
-                    Upload: Profile
-                  </span>
-                </div>
-              )}
+              <div className="w-18 h-18 sm:w-22 sm:h-22 rounded-full overflow-hidden border-2 border-[#7A1B2E] shadow-sm">
+                <img
+                  src={profileImage || profilePhoto}
+                  alt="Cherish Nwachukwu"
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
             </div>
           </div>
 

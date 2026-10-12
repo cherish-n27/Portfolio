@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Moon, Sun, Menu, X, FileText, ArrowUpRight } from 'lucide-react';
 import FlowerMotif from './FlowerMotif';
 import ProfileAvatar from './ProfileAvatar';
+import { profilePhoto } from '../assets';
 
 interface NavbarProps {
   darkMode: boolean;
@@ -16,7 +17,7 @@ export default function Navbar({
   onToggleDarkMode,
   onOpenCvModal,
   onOpenPhotoModal,
-  profileImage,
+  profileImage = profilePhoto,
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

@@ -1,28 +1,22 @@
-import { useEffect, useRef, useState, ChangeEvent, DragEvent } from 'react';
-import { X, Download, GraduationCap, Award, MapPin, Upload, RefreshCw, Check } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { X, Download, GraduationCap, Award, MapPin, Sparkles } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { profilePhoto, gradPhoto } from '../assets';
 
 interface PhotoLightboxModalProps {
   isOpen: boolean;
   onClose: () => void;
   imageSrc?: string;
-  onPhotoUpdate?: (newPhotoUrl: string) => void;
-  onResetPhoto?: () => void;
-  isCustomPhoto?: boolean;
 }
 
 export default function PhotoLightboxModal({
   isOpen,
   onClose,
-  imageSrc = '',
-  onPhotoUpdate,
-  onResetPhoto,
-  isCustomPhoto = false,
+  imageSrc = profilePhoto,
 }: PhotoLightboxModalProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [fileError, setFileError] = useState<string | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<'portrait' | 'full'>(
+    imageSrc === gradPhoto ? 'full' : 'portrait'
+  );
 
   useEffect(() => {
     if (!isOpen) return;
@@ -44,232 +38,120 @@ export default function PhotoLightboxModal({
 
   if (!isOpen) return null;
 
+  const currentDisplayPhoto = selectedPhoto === 'portrait' ? profilePhoto : gradPhoto;
+
   const handleDownload = () => {
-    if (!imageSrc || imageSrc.trim() === '') return;
-    try {
-      const link = document.createElement('a');
-      link.href = imageSrc;
-      link.download = 'Cherish_Nwachukwu_Profile.jpg';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (err) {
-      console.warn('Download error:', err);
-    }
-  };
-
-  const processFile = (file: File) => {
-    if (!file.type.startsWith('image/')) {
-      setFileError('Please select a valid image file (JPEG, PNG, WEBP, etc.)');
-      setTimeout(() => setFileError(null), 3500);
-      return;
-    }
-
-    try {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const result = event.target?.result as string;
-        if (result && onPhotoUpdate) {
-          onPhotoUpdate(result);
-          setUploadSuccess(true);
-          setTimeout(() => setUploadSuccess(false), 3000);
-        }
-      };
-      reader.readAsDataURL(file);
-    } catch (err) {
-      console.warn('FileReader error:', err);
-    }
-  };
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      processFile(file);
-    }
-  };
-
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file) {
-      processFile(file);
-    }
+    const link = document.createElement('a');
+    link.href = currentDisplayPhoto;
+    link.download = `Cherish_Nwachukwu_Graduation_${selectedPhoto}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
     <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Cherish Nwachukwu Profile Photo"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="relative max-w-lg w-full bg-[#181114] text-white rounded-3xl shadow-2xl border border-[#7A1B2E]/50 overflow-hidden flex flex-col items-center animate-in zoom-in-95 duration-200"
+        className="relative max-w-2xl w-full bg-[#FAF4EC] dark:bg-[#1A1417] rounded-3xl overflow-hidden shadow-2xl border border-[#E5DACF] dark:border-[#382229]"
         onClick={(e) => e.stopPropagation()}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
       >
-        {/* Hidden File Input */}
-        <input
-          type="file"
-          ref={fileInputRef}
-          accept="image/*"
-          className="hidden"
-          onChange={handleFileChange}
-        />
-
-        {/* Top Header Bar */}
-        <div className="w-full flex items-center justify-between px-5 py-3.5 bg-[#24171C] border-b border-[#3D222B]">
+        {/* Top Control Bar */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5DACF] dark:border-[#382229] bg-[#FAF4EC]/80 dark:bg-[#1A1417]/80 backdrop-blur-xs">
           <div className="flex items-center gap-2">
-            <GraduationCap className="w-4 h-4 text-[#F1A7C1]" />
-            <span className="text-xs font-bold tracking-wide uppercase text-[#F1A7C1]">
-              Academic Portrait • Class of 2025
+            <span className="font-bold text-sm text-[#1F191B] dark:text-[#F1A7C1]">
+              Academic Graduation Portrait
+            </span>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#7A1B2E] text-white">
+              Official Regalia
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            {/* Upload / Replace Photo Button */}
+          <div className="flex items-center gap-2">
+            {/* Download Button */}
             <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              title="Upload your exact real photo file"
-              className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-[#7A1B2E] hover:bg-[#8F2338] text-[#FAF4EC] transition-colors cursor-pointer border border-[#F1A7C1]/30 shadow-xs"
+              onClick={handleDownload}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#7A1B2E] hover:bg-[#631424] text-white transition-all cursor-pointer shadow-xs active:scale-95"
+              title="Download full resolution photo"
             >
-              <Upload className="w-3 h-3" />
-              <span>{imageSrc ? 'Replace Photo' : 'Upload: Profile Picture'}</span>
+              <Download className="w-3.5 h-3.5 text-[#F1A7C1]" />
+              <span className="hidden sm:inline">Download</span>
             </button>
 
-            {/* Remove / Clear photo button if a photo is loaded */}
-            {imageSrc && onResetPhoto && (
-              <button
-                type="button"
-                onClick={onResetPhoto}
-                title="Remove photo (return to empty upload box)"
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium hover:bg-red-950/60 text-red-300 border border-red-500/30 transition-colors cursor-pointer"
-              >
-                <X className="w-3 h-3" />
-                <span>Remove</span>
-              </button>
-            )}
-
-            {imageSrc && (
-              <button
-                onClick={handleDownload}
-                title="Download Photo"
-                className="p-1.5 rounded-full hover:bg-white/10 text-zinc-300 hover:text-white transition-colors cursor-pointer"
-              >
-                <Download className="w-4 h-4" />
-              </button>
-            )}
+            {/* Close Button */}
             <button
               onClick={onClose}
-              title="Close viewer (Esc)"
-              className="p-1.5 rounded-full hover:bg-white/10 text-zinc-300 hover:text-white transition-colors cursor-pointer"
+              className="w-8 h-8 rounded-full bg-[#E5DACF]/60 dark:bg-[#33232A] flex items-center justify-center text-[#1F191B] dark:text-[#F5EFE6] hover:bg-[#7A1B2E] hover:text-white dark:hover:bg-[#F1A7C1] dark:hover:text-[#1F191B] transition-colors cursor-pointer"
+              aria-label="Close modal"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Success toast notification */}
-        {uploadSuccess && (
-          <div className="w-full bg-emerald-950/90 border-b border-emerald-500/40 px-4 py-2 text-emerald-300 text-xs flex items-center justify-center gap-1.5 animate-in fade-in duration-200">
-            <Check className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Profile photo updated successfully across entire portfolio!</span>
+        {/* Photo Container */}
+        <div className="p-6 flex flex-col items-center">
+          <div className="relative max-h-[55vh] flex items-center justify-center overflow-hidden rounded-2xl bg-zinc-900 border border-[#E5DACF] dark:border-[#382229] shadow-inner mb-4">
+            <img
+              src={currentDisplayPhoto}
+              alt="Cherish Nwachukwu graduation portrait"
+              referrerPolicy="no-referrer"
+              className="max-h-[55vh] w-auto object-contain transition-all duration-300"
+            />
           </div>
-        )}
 
-        {/* Circular Large View in Modal */}
-        <div className="p-6 sm:p-8 flex flex-col items-center text-center w-full">
-          <div
-            className={`relative group mb-5 cursor-pointer ${
-              isDragging ? 'ring-4 ring-[#F1A7C1] rounded-full scale-105 transition-all' : ''
-            }`}
-            onClick={() => fileInputRef.current?.click()}
-            title={imageSrc ? "Click or drag & drop to replace photo" : "Click or drop file to upload Profile Picture"}
-          >
-            {/* Ambient burgundy/pink glow aura */}
-            <div className="absolute -inset-2 rounded-full bg-gradient-to-tr from-[#7A1B2E] via-[#F1A7C1] to-[#7A1B2E] opacity-70 blur-md group-hover:opacity-95 transition-opacity" />
+          {/* Toggle between Portrait Close-up & Full Ceremony Regalia */}
+          <div className="flex items-center gap-2 mb-4 bg-[#FAF5EE] dark:bg-[#231B1F] p-1.5 rounded-full border border-[#E5DACF] dark:border-[#382229]">
+            <button
+              onClick={() => setSelectedPhoto('portrait')}
+              className={`px-3.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                selectedPhoto === 'portrait'
+                  ? 'bg-[#7A1B2E] text-white shadow-xs'
+                  : 'text-[#5C5055] dark:text-[#BDB0B6] hover:text-[#1F191B] dark:hover:text-white'
+              }`}
+            >
+              Close-up Portrait
+            </button>
+            <button
+              onClick={() => setSelectedPhoto('full')}
+              className={`px-3.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                selectedPhoto === 'full'
+                  ? 'bg-[#7A1B2E] text-white shadow-xs'
+                  : 'text-[#5C5055] dark:text-[#BDB0B6] hover:text-[#1F191B] dark:hover:text-white'
+              }`}
+            >
+              Full-Length Regalia
+            </button>
+          </div>
 
-            {/* Circular Photo Container or Empty Upload Box */}
-            {imageSrc ? (
-              <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-[#FAF4EC] shadow-2xl bg-[#7A1B2E]">
-                <img
-                  src={imageSrc}
-                  alt="Cherish Nwachukwu in graduation cap and gown"
-                  className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
+          {/* Academic Honors Caption */}
+          <div className="w-full bg-[#FAF5EE] dark:bg-[#231B1F] p-4 rounded-2xl border border-[#E5DACF] dark:border-[#382229]">
+            <div className="flex items-center justify-between mb-1.5">
+              <h4 className="text-sm font-bold text-[#1F191B] dark:text-white flex items-center gap-1.5">
+                <GraduationCap className="w-4 h-4 text-[#7A1B2E] dark:text-[#F1A7C1]" />
+                <span>Bachelor of Information Technology in Business Systems</span>
+              </h4>
+              <span className="text-xs font-bold text-[#7A1B2E] dark:text-[#F1A7C1]">
+                Class of 2025
+              </span>
+            </div>
 
-                {/* Hover overlay to replace */}
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white p-3 gap-1">
-                  <Upload className="w-6 h-6 text-[#F1A7C1]" />
-                  <span className="text-xs font-bold uppercase tracking-wider">
-                    Click to Replace
-                  </span>
-                  <span className="text-[10px] text-zinc-300">or drop image here</span>
-                </div>
-              </div>
-            ) : (
-              <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full flex flex-col items-center justify-center p-6 border-4 border-dashed border-[#F1A7C1]/60 bg-[#25151C] shadow-2xl text-center">
-                <div className="w-12 h-12 rounded-full bg-[#7A1B2E] text-[#F1A7C1] flex items-center justify-center mb-2.5">
-                  <Upload className="w-6 h-6" />
-                </div>
-                <span className="text-sm font-bold text-white uppercase tracking-wider mb-1">
-                  Upload: Profile Picture
-                </span>
-                <span className="text-xs text-[#F1A7C1]/90 max-w-[160px] leading-tight">
-                  Click or drag & drop your real photo here (JPG / PNG)
-                </span>
-              </div>
-            )}
+            <p className="text-xs text-[#5C5055] dark:text-[#BDB0B6] mb-3">
+              IIE Rosebank College • Conferred with Distinction • Golden Key International Honour Society
+            </p>
 
-            {/* Golden Key / Distinction Badge Overlay */}
-            <div className="absolute bottom-1 right-2 bg-[#7A1B2E] text-white p-2 rounded-full border-2 border-[#FAF4EC] shadow-md">
-              <Award className="w-4 h-4 text-[#F1A7C1]" />
+            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#E5DACF]/80 dark:border-[#382229]/80 text-[11px] text-[#5C5055] dark:text-[#BDB0B6]">
+              <span className="inline-flex items-center gap-1">
+                <MapPin className="w-3 h-3 text-[#7A1B2E] dark:text-[#F1A7C1]" /> Cape Town, South Africa
+              </span>
+              <span>•</span>
+              <span className="inline-flex items-center gap-1 text-[#7A1B2E] dark:text-[#F1A7C1] font-semibold">
+                <Sparkles className="w-3 h-3" /> NQF Level 7
+              </span>
             </div>
           </div>
-
-          {/* Name & Academic Credentials */}
-          <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-1">
-            {PERSONAL_INFO.name}
-          </h3>
-          <p className="text-xs sm:text-sm font-semibold text-[#F1A7C1] mb-2 uppercase tracking-wide">
-            {PERSONAL_INFO.title}
-          </p>
-
-          <p className="text-xs text-[#D6C7CE] max-w-sm leading-relaxed mb-4">
-            Bachelor of Information Technology in Business Systems (NQF Level 7, <span className="text-white font-semibold">Graduated with Distinction</span>). Member of the <span className="text-white font-semibold">Golden Key International Honour Society</span>.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] text-[#A6979E]">
-            <span className="inline-flex items-center gap-1">
-              <GraduationCap className="w-3.5 h-3.5 text-[#F1A7C1]" /> IIE Rosebank College
-            </span>
-            <span>•</span>
-            <span className="inline-flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-[#F1A7C1]" /> Cape Town, South Africa
-            </span>
-          </div>
-        </div>
-
-        {/* Footer info note */}
-        <div className="w-full py-2.5 px-4 bg-[#1F1418] border-t border-[#3D222B] text-center text-[11px] text-[#8C7A82] flex items-center justify-between">
-          <span>Tip: You can drag & drop your <strong className="text-zinc-300 font-mono">Photo.jpeg</strong> directly here</span>
-          <span>Press <kbd className="px-1.5 py-0.5 rounded bg-black/40 text-zinc-300 font-mono text-[10px]">Esc</kbd> to close</span>
         </div>
       </div>
     </div>
