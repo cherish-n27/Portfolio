@@ -1,8 +1,16 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Moon, Sun, Menu, X, FileText, ArrowUpRight } from 'lucide-react';
 import FlowerMotif from './FlowerMotif';
 import ProfileAvatar from './ProfileAvatar';
 import { profilePhoto } from '../assets';
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      [elemName: string]: any;
+    }
+  }
+}
 
 interface NavbarProps {
   darkMode: boolean;

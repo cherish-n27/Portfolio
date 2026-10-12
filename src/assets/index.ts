@@ -1,18 +1,18 @@
-import profilePhoto from './profile-photo.jpeg';
-import gradPhoto from './grad-photo.jpeg';
-import grad2 from './grad2.jpeg';
-import leadership1 from './leadership1.jpeg';
-import leadership2 from './leadership2.jpeg';
-import leadership3 from './leadership3.jpeg';
-import leadership4 from './leadership4.jpeg';
-import leadership5 from './leadership5.jpeg';
-import work1 from './work1.jpeg';
-import work2 from './work2.jpeg';
-import work3 from './work3.jpeg';
-import extra1 from './extra1.jpeg';
-import extra2 from './extra2.jpeg';
-import extra3 from './extra3.jpeg';
-import extra4 from './extra4.jpeg';
+import profilePhoto from './images/profile-photo.jpeg';
+import gradPhoto from './images/grad-photo.jpeg';
+import grad2 from './images/grad2.jpeg';
+import leadership1 from './images/leadership1.jpeg';
+import leadership2 from './images/leadership2.jpeg';
+import leadership3 from './images/leadership3.jpeg';
+import leadership4 from './images/leadership4.jpeg';
+import leadership5 from './images/leadership5.jpeg';
+import work1 from './images/work1.jpeg';
+import work2 from './images/work2.jpeg';
+import work3 from './images/work3.jpeg';
+import extra1 from './images//extra1.jpeg';
+import extra2 from './images/extra2.jpeg';
+import extra3 from './images/extra3.jpeg';
+import extra4 from './images/extra4.jpeg';
 
 export {
   profilePhoto,

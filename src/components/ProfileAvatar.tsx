@@ -1,7 +1,7 @@
-import { useState, MouseEvent } from 'react';
+import { useState, type MouseEvent } from 'react';
 import { ZoomIn } from 'lucide-react';
 import FlowerMotif from './FlowerMotif';
-import { profilePhoto } from '../assets';
+import profilePhoto from '../assets/images/profile-photo.jpeg';
 
 interface ProfileAvatarProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
